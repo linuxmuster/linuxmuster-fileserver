@@ -53,11 +53,57 @@ linuxmuster-fileserver setup [-d DOMAIN] [-u USERNAME] [-p PASSWORD] [-s SCHOOL]
 ```
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| -h        | Helppage    |         |
+| -h        | Help-Page   |         |
 | -d        | Domain of the AD | linuxmuster.lan |
 | -u        | Username of an adminitrative user | global-admin |
 | -p        | Password for the administrative user (will be asked if not specified) |  |
 | -s        | Schoolname for the share (same as in AD) | default-school |
+
+3. Update Share on Linuxmuster-Server
+```
+SCHOOL=default-school
+FQDN=file01.linuxmuster.lan
+
+net conf addshare $SCHOOL /srv/samba/schools/$SCHOOL/
+net conf delparm $SCHOOL "guest ok"
+net conf delparm $SCHOOL "read only"
+net conf delparm $SCHOOL "path"
+net conf setparm $SCHOOL "msdfs root"  yes
+net conf setparm $SCHOOL "msdfs proxy"  //$FQDN/$SCHOOL
+net conf setparm $SCHOOL "hide unreadable"  yes
+```
+
+⚠️ The FQDN must resolve to the file server's address. So, specify the same name as in the ```devices.csv```!
+
+⚠️ The school must be the same as created on the file server!
+
+4. Run ```sophomorix-repair --all``` on the Linuxmuster-Server
+
+## Migration
+
+It is possible to outsource an existing share to a file server. To do this, install the file server as described above and then copy the files from ```/srv/samba/schools/default-school``` to the file server (for example, via rsync).
+
+To set the permissions correctly, run ```sophomorix-repair --all``` after copying the files, and then run ```linuxmuster-fix-acls default-school``` on the file server to set the permissions recursively for all files and folders.
+
+## Troubleshooting
+
+- See if services running an fileserver ```linuxmuster-fileserver status```
+- Check if users and groups can be read on the file server ```wbinfo -u``` and ```wbinfo -g```
+- Check if clients can be reached on the file server
+
+### How Samba DFS works
+
+When a client accesses a DFS path (e.g., ```\\server\default-school```), Samba responds with a DFS referral. This referral tells the client where the actual data is stored — typically a UNC path like ```\\file01.linuxmuster.lan\default-school```.
+
+The client then transparently connects to that target server and accesses the files directly, as if they were part of the original DFS path. The redirection happens behind the scenes, so users always see the unified DFS namespace.
+
+Key points:
+
+- Clients access a virtual root (\\domain\dfsroot) instead of individual servers.
+
+- Samba redirects the client to the correct server using DFS referrals.
+
+- After redirection, file access works just like with any regular SMB share.
 
 ## Performance improvement
 
