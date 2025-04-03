@@ -91,7 +91,7 @@ To set the permissions correctly, run ```sophomorix-repair --all``` after copyin
 - Check if users and groups can be read on the file server ```wbinfo -u``` and ```wbinfo -g```
 - Check if clients can be reached on the file server
 
-### How Samba DFS works
+## How Samba DFS works
 
 When a client accesses a DFS path (e.g., ```\\server\default-school```), Samba responds with a DFS referral. This referral tells the client where the actual data is stored — typically a UNC path like ```\\file01.linuxmuster.lan\default-school```.
 
