@@ -12,6 +12,7 @@ import subprocess
 import socket
 import os.path
 import os
+import sys
 
 from pwinput import pwinput
 from subprocess import PIPE
@@ -90,8 +91,7 @@ def setup(domain, username, password, school) -> str:
     if os.path.exists("/etc/krb5.conf"):
         print("✅")
     else:
-        print("❌")
-        exit(1)
+        sys.exit("❌")
     
     print("Copy template for new nsswitch.conf... ", end="")
     with open("/var/lib/linuxmuster-fileserver/nsswitch.conf.example", "r") as f:
@@ -101,8 +101,7 @@ def setup(domain, username, password, school) -> str:
     if os.path.exists("/etc/nsswitch.conf"):
         print("✅")
     else:
-        print("❌")
-        exit(1)
+        sys.exit("❌")
 
     print("Copy template for new smb.conf... ", end="")
     with open("/var/lib/linuxmuster-fileserver/smb.conf.example", "r") as f:
@@ -115,16 +114,14 @@ def setup(domain, username, password, school) -> str:
     if os.path.exists("/etc/samba/smb.conf"):
         print("✅")
     else:
-        print("❌")
-        exit(1)
+        sys.exit("❌")
 
     print("Try to join domain with given data... ", end="")
     __execute(["/usr/bin/net", "ads", "join", "-U", username + "%" + password])
     if "Join is OK" in __execute(["/usr/bin/net", "ads", "testjoin"]).stdout.decode():
         print("✅")
     else:
-        print("❌")
-        exit(1)
+        sys.exit("❌")
 
     print("Create share for school on this fileserver... ", end="")
     path = "/srv/samba/schools/" + school
@@ -141,8 +138,7 @@ def setup(domain, username, password, school) -> str:
     if school in __execute(["/usr/bin/net", "conf", "list"]).stdout.decode():
         print("✅")
     else:
-        print("❌")
-        exit(1)
+        sys.exit("❌")
 
     print("Restart service smbd.... ", end="")
     __execute(["/usr/bin/systemctl", "restart", "smbd"])
