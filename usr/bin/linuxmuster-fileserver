@@ -13,7 +13,9 @@ import socket
 import os.path
 import os
 
+from pwinput import pwinput
 from subprocess import PIPE
+
 
 def __execute(command) -> subprocess.CompletedProcess:
     """
@@ -189,7 +191,7 @@ def main():
 
     if args.command == "setup":
         if not args.password:
-            password = input("Please enter password for %s@%s: " % (args.username, args.domain.upper()))
+            password = pwinput("Please enter password for %s@%s: " % (args.username, args.domain.upper()))
         else:
             password = args.password
         print(setup(args.domain.upper(), args.username, password, args.school.lower()))
