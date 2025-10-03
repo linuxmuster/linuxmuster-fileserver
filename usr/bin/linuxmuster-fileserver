@@ -117,11 +117,11 @@ def setup(domain, username, password, school) -> str:
         sys.exit("❌")
 
     print("Try to join domain with given data... ", end="")
-    __execute(["/usr/bin/net", "ads", "join", "-U", username + "%" + password])
+    output = __execute(["/usr/bin/net", "ads", "join", "-U", username + "%" + password])
     if "Join is OK" in __execute(["/usr/bin/net", "ads", "testjoin"]).stdout.decode():
         print("✅")
     else:
-        sys.exit("❌")
+        sys.exit(f"❌ \n\033[91m{output.stdout.decode()}\033[0m")
 
     print("Create share for school on this fileserver... ", end="")
     path = "/srv/samba/schools/" + school
