@@ -64,7 +64,11 @@ linuxmuster-fileserver setup [-d DOMAIN] [-u USERNAME] [-p PASSWORD] [-s SCHOOL]
 SCHOOL=default-school
 FQDN=file01.linuxmuster.lan
 
+# Create a new share, only necessary for new installation,
+# but should be removed for migration
 net conf addshare $SCHOOL /srv/samba/schools/$SCHOOL/
+
+# Configure the share as a DFS share
 net conf delparm $SCHOOL "guest ok"
 net conf delparm $SCHOOL "read only"
 net conf delparm $SCHOOL "path"
@@ -77,13 +81,18 @@ net conf setparm $SCHOOL "hide unreadable"  yes
 
 ⚠️ The school must be the same as created on the file server!
 
+⚠️ The first command `net conf addshare` should be removed if you are migrating an existing share to the fileserver!
+
 4. Run ```sophomorix-repair --all``` on the Linuxmuster-Server
 
 ## Migration
 
-It is possible to outsource an existing share to a file server. To do this, install the file server as described above and then copy the files from ```/srv/samba/schools/default-school``` to the file server (for example, via rsync).
-
-To set the permissions correctly, run ```sophomorix-repair --all``` after copying the files, and then run ```linuxmuster-fix-acls default-school``` on the file server to set the permissions recursively for all files and folders.
+It is possible to outsource an existing share to a file server. 
+To do this: 
+- install the file server as described above, but without the command `net conf addshare` in the last script,
+- copy the files from ```/srv/samba/schools/default-school``` to the file server (for example, via rsync),
+- set the permissions correctly, run ```sophomorix-repair --all``` on the linuxmuster.net's server after copying the files,
+- run ```linuxmuster-fix-acls default-school``` on the file server to set the permissions recursively for all files and folders.
 
 ## Troubleshooting
 
