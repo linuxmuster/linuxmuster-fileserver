@@ -78,33 +78,12 @@ set_acls_for_user_folder() {
         acl_transfer_cleaned=""
     fi
 
-    # Rekursive ACL-Übernahme für Unterordner
-    find "$user_folder" -mindepth 1 -type d | while read -r dir; do
-        if [[ "$dir" == "$transfer_folder"* ]]; then
-            if [[ -n "$acl_transfer_cleaned" ]]; then
-                echo "Setze ACLs für Transfer-Unterordner: $dir"
-                echo "$acl_transfer_cleaned" | setfacl --set-file=- "$dir"
-            fi
-        else
-            echo "Setze ACLs für normalen Unterordner: $dir"
-            echo "$acl_user_folder_cleaned" | setfacl --set-file=- "$dir"
-        fi
-    done
-
-    # ACLs für Dateien setzen (inkl. Transfer)
-    find "$user_folder" -mindepth 1 -type f | while read -r file; do
-        if [[ "$file" == "$transfer_folder"* ]]; then
-            if [[ -n "$acl_transfer_cleaned" ]]; then
-                acl_transfer_file_cleaned=$(clean_acl "$acl_transfer_cleaned" "file")
-                echo "Setze ACLs für Transfer-Datei: $file"
-                echo "$acl_transfer_file_cleaned" | setfacl --set-file=- "$file"
-            fi
-        else
-            acl_user_file_cleaned=$(clean_acl "$acl_user_folder_cleaned" "file")
-            echo "Setze ACLs für normale Datei: $file"
-            echo "$acl_user_file_cleaned" | setfacl --set-file=- "$file"
-        fi
-    done
+    echo "Setze ACLs für den Ordner: $user_folder"
+    echo "$acl_user_folder_cleaned" | setfacl -R --set-file=- "$user_folder"
+    if [[ -n "$acl_transfer_cleaned" ]]; then
+        echo "Setze ACLs für den Ordner $user_folder/transfer"
+        echo "$acl_transfer_cleaned" | setfacl -R --set-file=- "$user_folder/transfer"
+    fi
 }
 
 # Funktion zum Setzen der ACLs für Share-Ordner
@@ -123,16 +102,7 @@ set_acls_for_share_folder() {
             acl_main_cleaned=$(clean_acl "$acl_main" "dir")
 
             # Setze ACLs für alle Unterordner und Dateien
-            find "$main_folder" -mindepth 1 -type d | while read -r dir; do
-                echo "Setze ACLs für Unterordner von $main_folder: $dir"
-                echo "$acl_main_cleaned" | setfacl --set-file=- "$dir"
-            done
-
-            find "$main_folder" -mindepth 1 -type f | while read -r file; do
-                acl_main_file_cleaned=$(clean_acl "$acl_main_cleaned" "file")
-                echo "Setze ACLs für Datei in $main_folder: $file"
-                echo "$acl_main_file_cleaned" | setfacl --set-file=- "$file"
-            done
+            echo "$acl_main_cleaned" | setfacl -R --set-file=- "$main_folder"
         fi
     done
 }
@@ -150,16 +120,7 @@ set_acls_for_flat_share_folder() {
         acl_base_cleaned=$(clean_acl "$acl_base" "dir")
 
         # Setze ACLs für alle Unterordner und Dateien
-        find "$base_folder" -mindepth 1 -type d | while read -r dir; do
-            echo "Setze ACLs für Unterordner von $base_folder: $dir"
-            echo "$acl_base_cleaned" | setfacl --set-file=- "$dir"
-        done
-
-        find "$base_folder" -mindepth 1 -type f | while read -r file; do
-            acl_base_file_cleaned=$(clean_acl "$acl_base_cleaned" "file")
-            echo "Setze ACLs für Datei in $base_folder: $file"
-            echo "$acl_base_file_cleaned" | setfacl --set-file=- "$file"
-        done
+        echo "$acl_base_cleaned" | setfacl -R --set-file=- "$base_folder"
     fi
 }
 
