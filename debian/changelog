@@ -1,3 +1,10 @@
+linuxmuster-fileserver (7.3.1~rc2-0) lmn73; urgency=low
+
+  * Use setfacl -R instead of per-file ACL application (PR #1)
+  * Improve migration documentation in README (PR #2)
+
+ -- Lukas Spitznagel <lukas.spitznagel@netzint.de>  Mon, 07 Apr 2026 12:00:00 +0200
+
 linuxmuster-fileserver (7.3.1~rc1-0) lmn73; urgency=low
 
   * Use sys.exit() instead of exit() for robustness
