@@ -8,6 +8,6 @@ Rules-Requires-Root: no
 
 Package: linuxmuster-fileserver
 Architecture: all
-Depends: ${misc:Depends}, python3, samba, krb5-user, krb5-config, winbind, libpam-winbind, libnss-winbind, chrony | ntpsec | systemd-timesyncd, acl, quota
+Depends: ${misc:Depends}, python3, samba, krb5-user, krb5-config, winbind, libpam-winbind, libnss-winbind, libnss-systemd, chrony | ntpsec | systemd-timesyncd, acl, quota
 Homepage: www.netzint.de
 Description: Linuxmuster Fileserver

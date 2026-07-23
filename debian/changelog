@@ -1,4 +1,4 @@
-linuxmuster-fileserver (7.4.0-0) lmn74; urgency=low
+linuxmuster-fileserver (7.4.0~rc1-0) lmn74; urgency=low
 
   * Add support for Ubuntu 26.04 LTS (Resolute Raccoon)
   * Replace the "ntp" dependency, which no longer exists in Ubuntu 26.04,
@@ -10,6 +10,14 @@ linuxmuster-fileserver (7.4.0-0) lmn74; urgency=low
   * Declare source format 3.0 (native)
   * Build releases on the Ubuntu 26.04 runner image
   * Publish to the lmn74 distribution
+  * nsswitch.conf template: use "files" instead of the legacy "compat" NSS
+    service and drop "mdns4_minimal", whose module is not installed
+  * Depend on libnss-systemd, which provides the "systemd" NSS service the
+    nsswitch.conf template refers to
+  * linuxmuster-fix-acls: return instead of continue outside a loop, and
+    print a correct usage line when no school is given
+  * Makefile: drop the unused CONFIGFILE variable and the "all" target that
+    referred to a non-existent "build" target
 
  -- Lukas Spitznagel <lukas.spitznagel@netzint.de>  Thu, 23 Jul 2026 12:00:00 +0200
 

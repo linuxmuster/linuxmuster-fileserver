@@ -25,7 +25,7 @@ Share-Directories:
 
 if [[ -z $1 ]]; then
   echo "Keine Schule als Parameter angegeben!"
-  echo "./$0 <SCHULE>"
+  echo "Aufruf: $(basename "$0") <SCHULE>"
   exit 1
 fi
 
@@ -115,7 +115,7 @@ set_acls_for_flat_share_folder() {
         acl_base=$(getfacl -p "$base_folder" 2>/dev/null)
         if [[ -z "$acl_base" ]]; then
             echo "Fehler: Kann ACL von $base_folder nicht abrufen!"
-            continue
+            return
         fi
         acl_base_cleaned=$(clean_acl "$acl_base" "dir")
 

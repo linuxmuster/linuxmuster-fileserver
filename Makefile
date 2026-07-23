@@ -1,6 +1,6 @@
-CONFIGFILE := ''
+.PHONY: all deb
 
-all: build
+all: deb
 
 deb:
-	dpkg-buildpackage -rfakeroot -tc -sa -us -uc -I".directory" -I".git" -I"buildpackage.sh"
+	dpkg-buildpackage -rfakeroot -tc -sa -us -uc -I".directory" -I".git" -I".omc" -I"buildpackage.sh"
