@@ -20,6 +20,13 @@ Primary maintainer | lukas.spitznagel@netzint.de
     
 \* The linuxmuster community consist of people who are nice and happy to help. They are not directly involved in the development though, and might not be able to help in all cases.
 
+## Requirements
+
+- Ubuntu 26.04 LTS (Resolute Raccoon) — the platform the `lmn74` packages are built and tested on
+- Time synchronisation via `chrony` (recommended), `ntpsec` or `systemd-timesyncd`. The `ntp` package no longer exists in Ubuntu 26.04.
+
+> For linuxmuster.net 7.3 / Ubuntu 24.04 use the `lmn73` repository instead.
+
 ## Installation
 
 ### 1. Import key
@@ -31,7 +38,7 @@ wget -qO- "https://deb.linuxmuster.net/pub.gpg" | gpg --dearmour -o /usr/share/k
 ### 2. Add repo
 
 ```bash
-sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/linuxmuster.net.gpg] https://deb.linuxmuster.net/ lmn73 main" > /etc/apt/sources.list.d/lmn73.list'
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/linuxmuster.net.gpg] https://deb.linuxmuster.net/ lmn74 main" > /etc/apt/sources.list.d/lmn74.list'
 ```
 
 ### 3. Update & install

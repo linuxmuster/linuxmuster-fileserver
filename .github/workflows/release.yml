@@ -11,7 +11,8 @@ name: Build Release
 jobs:
   deb-package:
     name: build DEB-Package
-    runs-on: ubuntu-24.04
+    # Build on the same release the package targets (lmn74 = Ubuntu 26.04 LTS)
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,7 +36,7 @@ jobs:
     needs: deb-package
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     name: GitHub Release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -43,7 +44,8 @@ jobs:
           name: deb-package
 
       - name: Extract current changes
-        run: cat *.changes | sed '0,/^Changes:$/d' | sed '/Checksums.*/Q' | sed '1,2d' | tail >> ./current-changes
+        # No "tail" here: it silently truncated release notes to the last 10 lines
+        run: cat *.changes | sed '0,/^Changes:$/d' | sed '/Checksums.*/Q' | sed '1,2d' >> ./current-changes
 
       - name: Define distribution variables
         run: |

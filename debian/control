@@ -2,10 +2,12 @@ Source: linuxmuster-fileserver
 Section: admin
 Priority: optional
 Maintainer: Lukas Spitznagel <lukas.spitznagel@netzint.de>
-Build-Depends: debhelper (>= 4.0.0), fakeroot
+Build-Depends: debhelper-compat (= 13), fakeroot
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
 
 Package: linuxmuster-fileserver
 Architecture: all
-Depends: samba, krb5-user, krb5-config, winbind, libpam-winbind, libnss-winbind, ntp, acl, quota
+Depends: ${misc:Depends}, python3, samba, krb5-user, krb5-config, winbind, libpam-winbind, libnss-winbind, chrony | ntpsec | systemd-timesyncd, acl, quota
 Homepage: www.netzint.de
 Description: Linuxmuster Fileserver

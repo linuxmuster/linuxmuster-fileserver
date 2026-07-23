@@ -1,3 +1,18 @@
+linuxmuster-fileserver (7.4.0-0) lmn74; urgency=low
+
+  * Add support for Ubuntu 26.04 LTS (Resolute Raccoon)
+  * Replace the "ntp" dependency, which no longer exists in Ubuntu 26.04,
+    with "chrony | ntpsec | systemd-timesyncd"
+  * Add explicit dependency on python3
+  * Fix SyntaxWarning about invalid escape sequences emitted by Python 3.14
+    on every invocation (banner is now a raw string)
+  * Switch packaging to debhelper compat level 13
+  * Declare source format 3.0 (native)
+  * Build releases on the Ubuntu 26.04 runner image
+  * Publish to the lmn74 distribution
+
+ -- Lukas Spitznagel <lukas.spitznagel@netzint.de>  Thu, 23 Jul 2026 12:00:00 +0200
+
 linuxmuster-fileserver (7.3.1~rc2-0) lmn73; urgency=low
 
   * Use setfacl -R instead of per-file ACL application (PR #1)
