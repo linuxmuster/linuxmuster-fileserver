@@ -1,4 +1,4 @@
-linuxmuster-fileserver (7.4.0~rc1-0) lmn74; urgency=low
+linuxmuster-fileserver (7.4.0-0) lmn74; urgency=low
 
   * Add support for Ubuntu 26.04 LTS (Resolute Raccoon)
   * Replace the "ntp" dependency, which no longer exists in Ubuntu 26.04,
@@ -19,7 +19,7 @@ linuxmuster-fileserver (7.4.0~rc1-0) lmn74; urgency=low
   * Makefile: drop the unused CONFIGFILE variable and the "all" target that
     referred to a non-existent "build" target
 
- -- Lukas Spitznagel <lukas.spitznagel@netzint.de>  Thu, 23 Jul 2026 12:00:00 +0200
+ -- Lukas Spitznagel <lukas.spitznagel@netzint.de>  Fri, 24 Jul 2026 12:00:00 +0200
 
 linuxmuster-fileserver (7.3.1~rc2-0) lmn73; urgency=low
 
