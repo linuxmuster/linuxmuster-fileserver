@@ -113,7 +113,8 @@ To do this:
 - install the file server as described above, but without the command `net conf addshare` in the last script,
 - copy the files from ```/srv/samba/schools/default-school``` to the file server (for example, via rsync),
 - set the permissions correctly, run ```sophomorix-repair --all``` on the linuxmuster.net's server after copying the files,
-- run ```linuxmuster-fix-acls default-school``` on the file server to set the permissions recursively for all files and folders.
+- run ```linuxmuster-fix-acls default-school``` on the file server to set the permissions recursively for all files and folders,
+- set the quotas again with ```sophomorix-quota --set``` and restart the API with ```systemctl restart linuxmuster-api``` on the linuxmuster.net's server (steps 5 and 6 above).
 
 ## Troubleshooting
 
