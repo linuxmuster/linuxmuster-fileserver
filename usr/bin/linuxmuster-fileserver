@@ -153,7 +153,17 @@ def setup(domain, username, password, school) -> str:
     else:
         print("❌")
 
-    return "\nSetup finished successfully!\n"
+    fqdn = f"{socket.gethostname().lower()}.{domain.lower()}"
+
+    return f"""
+Setup finished successfully!
+
+Next steps on the linuxmuster.net server (README, steps 3 to 6):
+  - point the share {school} to this fileserver: "msdfs root" yes, "msdfs proxy" //{fqdn}/{school}
+  - sophomorix-repair --all
+  - sophomorix-quota --set              (quotas are per filesystem: none exist here yet)
+  - systemctl restart linuxmuster-api   (it reads the place of the shares at start)
+"""
 
 def main():
     parser = argparse.ArgumentParser()
